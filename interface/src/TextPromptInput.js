@@ -8,12 +8,40 @@ const useStyles = () => ({
     },
 })
 
+const allData = {};
+
+allData.text = "TEST";
+
+const data = JSON.stringify(allData);
+
 const TextPromptInput = ({classes, enterPressedCallback, disabled}) => {
     const [promptText, setPromptText] = useState('');
 
     function handleTextPromptKeyPressed(event) {
         if (event.key === 'Enter') {
             enterPressedCallback(promptText)
+
+
+            const data = "text=" + promptText
+
+
+            // UPDATE FLAPS HERE
+            fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
+                method: 'POST', // or 'PUT'
+                mode: 'no-cors',
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: data
+                })
+                .then(response => response.json())
+                .then(data => {
+                console.log('Success:', data);
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
         }
     }
 
