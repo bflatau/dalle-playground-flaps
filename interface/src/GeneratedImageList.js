@@ -4,7 +4,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 const useStyles = () => ({
     generatedImg: {
-        borderRadius: '8px',
+        // borderRadius: '8px',
     },
 });
 

@@ -21,14 +21,26 @@ const TextPromptInput = ({classes, enterPressedCallback, disabled}) => {
         if (event.key === 'Enter') {
             enterPressedCallback(promptText)
 
+            const data = "text=" + '                  ' + promptText.toUpperCase();
 
-            const data = "text=" + promptText.toUpperCase();
-
-            console.log(data);
+            console.log('data from dall-e to splitflaps', data);
 
 
-            // UPDATE FLAPS HERE
-            fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
+            fetch('http://0.0.0.0:8090/splitflap/start_animation', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({animation:'randomFill'})
+                // body: JSON.stringify({animation:'rain'})
+              })
+
+
+            setTimeout(
+
+                  // UPDATE FLAPS HERE
+                fetch('http://0.0.0.0:8090/splitflap/set_flaps', {
                 method: 'POST', // or 'PUT'
                 mode: 'no-cors',
                 headers: {
@@ -44,6 +56,9 @@ const TextPromptInput = ({classes, enterPressedCallback, disabled}) => {
                 // .catch((error) => {
                 // console.error('Error:', error);
                 // });
+                
+                , 200);
+          
         }
     }
 
@@ -61,3 +76,30 @@ const TextPromptInput = ({classes, enterPressedCallback, disabled}) => {
 }
 
 export default withStyles(useStyles)(TextPromptInput);
+
+
+
+// const startAnimation = async (animation) => {
+//     try {
+//       const result = await fetch(new URL('/splitflap/start_animation', backendHost), {
+//         method: 'POST',
+//         headers: {
+//           'Accept': 'application/json',
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({animation})
+//       })
+//       console.log(`Start animation result: ${await result.text()}`)
+//     } catch (err) {
+//       alert(err)
+//     }
+//   }
+  
+
+
+
+//'a red truck'
+
+// 'a clown skydiving' 
+
+// 'a sad panda at a  cafe drinking      coffee'
