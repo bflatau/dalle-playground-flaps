@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import {
     Card, CardContent, FormControl, FormHelperText,
     InputLabel, MenuItem, Select, Typography
 } from "@material-ui/core";
-import {callDalleService} from "./backend_api";
+import { callDalleService } from "./backend_api";
 import GeneratedImageList from "./GeneratedImageList";
 import TextPromptInput from "./TextPromptInput";
 
@@ -48,26 +48,39 @@ const useStyles = () => ({
         margin: "20px",
         minWidth: 120,
     },
+    // gallery: {
+    //     display: 'flex',
+    //     flex: '1',
+    //     maxWidth: '50%',
+    //     height: '100%',
+    //     justifyContent: 'center',
+    //     alignItems: 'flex-start',
+    //     padding: '1rem',
+    //     backgroundColor: 'red'
+    // },
     gallery: {
-        display: 'flex',
-        flex: '1',
-        maxWidth: '50%',
-        height: '100%',
+        display: 'inline-block',
+        // flex: '1',
+        width: '850px',
+        height: '575px',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
+        // marginLeft: '40px',
+        // marginRight: '40px',
         padding: '1rem',
+        borderStyle: 'solid'
     },
 });
 
 
-const App = ({classes}) => {
+const App = ({ classes }) => {
     const [backendUrl, setBackendUrl] = useState('');
     const [isFetchingImgs, setIsFetchingImgs] = useState(false);
     const [isCheckingBackendEndpoint, setIsCheckingBackendEndpoint] = useState(false);
     const [isValidBackendEndpoint, setIsValidBackendEndpoint] = useState(true);
     const [generatedImages, setGeneratedImages] = useState([]);
     const [apiError, setApiError] = useState('')
-    const [imagesPerQuery, setImagesPerQuery] = useState(2);
+    const [imagesPerQuery, setImagesPerQuery] = useState(6);
     const [queryTime, setQueryTime] = useState(0);
 
     const imagesPerQueryOptions = 10
@@ -97,11 +110,11 @@ const App = ({classes}) => {
             return <Typography variant="h5" color="error">{apiError}</Typography>
         }
 
-        if (isFetchingImgs) {
-            return <LoadingSpinner isLoading={isFetchingImgs}/>
-        }
+        // if (isFetchingImgs) {
+        //     return <LoadingSpinner isLoading={isFetchingImgs}/>
+        // }
 
-        return <GeneratedImageList generatedImages={generatedImages}/>
+        return <GeneratedImageList generatedImages={generatedImages} />
     }
 
     return (
@@ -123,23 +136,23 @@ const App = ({classes}) => {
                     <Card className={classes.searchQueryCard}>
                         <CardContent>
                             <BackendUrlInput setBackendValidUrl={setBackendUrl}
-                                             isValidBackendEndpoint={isValidBackendEndpoint}
-                                             setIsValidBackendEndpoint={setIsValidBackendEndpoint}
-                                             setIsCheckingBackendEndpoint={setIsCheckingBackendEndpoint}
-                                             isCheckingBackendEndpoint={isCheckingBackendEndpoint}
-                                             disabled={isFetchingImgs}/>
+                                isValidBackendEndpoint={isValidBackendEndpoint}
+                                setIsValidBackendEndpoint={setIsValidBackendEndpoint}
+                                setIsCheckingBackendEndpoint={setIsCheckingBackendEndpoint}
+                                isCheckingBackendEndpoint={isCheckingBackendEndpoint}
+                                disabled={isFetchingImgs} />
                             <TextPromptInput enterPressedCallback={enterPressedCallback}
-                                             disabled={isFetchingImgs || !validBackendUrl}/>
+                                disabled={isFetchingImgs || !validBackendUrl} />
 
                             <FormControl className={classes.imagesPerQueryControl}
-                                         variant="outlined">
+                                variant="outlined">
                                 <InputLabel id="images-per-query-label">
                                     Images per query
                                 </InputLabel>
                                 <Select labelId="images-per-query-label"
-                                        label="Images per query" value={imagesPerQuery}
-                                        disabled={isFetchingImgs}
-                                        onChange={(event) => setImagesPerQuery(event.target.value)}>
+                                    label="Images per query" value={imagesPerQuery}
+                                    disabled={isFetchingImgs}
+                                    onChange={(event) => setImagesPerQuery(event.target.value)}>
                                     {Array.from(Array(imagesPerQueryOptions).keys()).map((num) => {
                                         return <MenuItem key={num + 1} value={num + 1}>
                                             {num + 1}
@@ -154,14 +167,21 @@ const App = ({classes}) => {
                         Query execution time: {queryTime} sec
                     </Typography>}
                 </div>
-                {(generatedImages.length > 0 || apiError || isFetchingImgs) &&
-                <div className={classes.gallery}>
-                    {getGalleryContent()}
-                </div>
-                }
+                
+                    <div className={classes.gallery}>
+                        {getGalleryContent()}
+                    </div>
+                
             </div>
         </div>
     )
 }
 
 export default withStyles(useStyles)(App);
+
+
+// {(generatedImages.length > 0 || apiError || isFetchingImgs) &&
+//     <div className={classes.gallery}>
+//         {getGalleryContent()}
+//     </div>
+// }
